@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>{{ h1 }}</title>
+</head>
+<body>
+    <h1>{{ h1 }}</h1>
+    <div class="list_requests">
+        {% for request in requests %}
+        <div class="request">
+            <p>
+                <strong>ID:</strong> {{ request.id }}
+            </p>
+            <p>
+                <strong>Дата:</strong> {{ request.date }}
+            </p>
+            <p>
+                <strong>Имя:</strong> {{ request.name }}
+            </p>
+            <p>
+                <strong>Фамилия:</strong> {{ request.surname }}
+            </p>
+            <p>
+                <strong>Телефон:</strong> {{ request.phone }}
+            </p>
+            <p>
+                <strong>Email:</strong> {{ request.email }}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

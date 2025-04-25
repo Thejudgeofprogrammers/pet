@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <title>АМН Гарант-Сервис</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <style>
+        /* Стили для кнопки чата */
+.chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 15px 25px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.chat-button:hover {
+  background-color: #007bff;
+  transform: scale(1.05);
+}
+
+/* Стили для окна чата */
+.chat-window {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 350px;
+  height: 500px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  display: none;
+  flex-direction: column;
+  z-index: 1000;
+  overflow: hidden;
+}
+#chat-window {
+  display: none;
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 300px;
+  height: 400px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.chat-header {
+  background-color: #007bff;
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-chat {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.chat-messages {
+  flex-grow: 1;
+  padding: 15px;
+  overflow-y: auto;
+}
+
+.chat-input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #eee;
+}
+
+.chat-input input {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.chat-input button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.chat-input button:hover {
+  background-color: #007bff;
+}
+    </style>
+</head>
+<body>
+    <!-- Шапка -->
+        <header id="header" class="hidden">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo-142x52.png') }}" alt="Гарант-Лого">
+            </div>
+            <div class="header_reduced">
+                <span></span>
+            </div>
+            <div class="support">
+                <a href="#block4" class="redir">Статьи</a>
+                <a href="#block5" class="redir">Обучение</a>
+                <a href="#block6" class="redir">О нас</a>
+                <div class="kon">
+                    <a href="mailto: teg@gskam.ru" class="redir">teg@gskam.ru</a>
+                    <a href="tel:+74152267615" class="redir">+7 (4152)-26-76-15</a>
+                </div>
+                <a href="#block7" class="button">Попробовать</a>
+            </div>
+        </header>
+    <!-- 1 Блок -->
+    <section id="block1" class="hero">
+        <h1>Получите бесплатный доступ к базе "Гарант"</h1>
+        <p>Заполните форму и начните пользоваться уже сегодня!</p>
+        <a href="#block7" class="button">Попробовать</a>
+    </section>
+
+    <!-- 2 Блок -->
+    <section id="block2" class="description">
+        <h2>Что такое "Гарант"?</h2>
+        <p>"Гарант" — это мощная база данных, которая помогает вам находить решения для ваших задач. Она предоставляет доступ к законодательным актам, судебной практике и другим важным документам.</p>
+    </section>
+
+    <!-- 3 Блок -->
+    <section id="block3" class="video-block">
+        <div class="video-preview">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/ваше_видео" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="text">
+            <h2>Зачем вам "Гарант"?</h2>
+            <p>Информационная система "Гарант" была создана для решения ряда важных задач, связанных с доступом к правовой информации, упрощением работы с законодательством и повышением эффективности юридической деятельности. </p>
+        </div>
+    </section>
+
+    <!-- 4 Блок -->
+    <section id="block4" class="articles">
+        <div class="sub_ttle">
+            <h2>Полезные статьи</h2>
+            <a href="{{ url_for('router.articles_list') }}" class="all_link">показать статьи</a>
+        </div>
+        <div class="article-list">
+            <div class="article">
+                <h3>Оперативность</h3>
+                <p>Возможность мгновенно отслеживать новости законодательства</p>
+            </div>
+            <div class="article">
+                <h3>Живая горячая линия</h3>
+                <p>Нужна помощь? Наши специалисты всегда на связи!</p>
+            </div>
+            <div class="article">
+                <h3>Статья 3</h3>
+                <p>Краткое описание статьи 3.</p>
+            </div>
+            <div class="article">
+                <h3>2 в 1</h3>
+                <p>Возможность работы в Гаранте как на компьютере, так и через интернет.</p>
+            </div>
+            <div class="article">
+                <h3>Взвешенность решений </h3>
+                <p> Взвешенность решений и оптимальное решение стоящей перед Вами проблемы</p>
+            </div>
+            <div class="article">
+                <h3>Передовые идеи</h3>
+                <p>Самые современные технологии для юристов, бухгалтеров, кадровиков и всех, кто сталкивается в своей работе с законодательством</p>
+            </div>
+        </div>
+    </section>
+    <!-- 5 Блок -->
+    <section id="block5" class="solutions">
+        <div class="sub_ttle">
+            <h2>Обучающие видео</h2>
+            <a href="{{ url_for('router.videos_list') }}" class="all_link">показать все видео</a>
+        </div>
+        <div class="content">
+            <div class="video-preview">
+                <iframe width="560" height="315" src="https://youtube.com/watch?v=5DpVNUdHhZY&t=" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="text">
+                <h2>Анализ списков документов</h2>
+                <p>Как эффективно работать со списками в системе ГАРАНТ! Для чего нужен «Синхронный просмотр», какие критерии сортировки, фильтрации и анализа списков представлены в системе, как сохранять списки документов для последующей работы</p>
+            </div>
+        </div>
+        <div class="content">
+            <div class="video-preview">
+                <iframe width="560" height="315" src="https://youtube.com/watch?v=5DpVNUdHhZY&t=" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="text">
+                <h2>Работа с энциклопедиями решений</h2>
+                <p>Энциклопедии решений – уникальные авторские аналитические материалы, доступные только пользователям системы ГАРАНТ и позволяющие быстро находить готовые ответы на актуальные правовые вопросы.</p>
+            </div>
+        </div>
+        <div class="link">
+            <a href="https://edu.garant.ru" style="    color: #00a885; text-align: center; font-size: 46px;" target="_blank">
+                ГАРАНТ - студенту, аспиранту, преподавателю
+            </a>
+        </div>
+    </section>
+
+    <!-- 6 Блок -->
+    <section id="block6" class="about">
+        <h2>О нас</h2>
+        <h4>Все начиналось в далеком 2000 году, когда о справочно-правовых системах еще мало кто знал, сотрудники предприятий и учреждений еще пользовались газетами и журналами, а скорость получения правовой информации оставляла желать лучшего.<br>
+            В 2023 году нашей IT-компании исполняется 20 лет, это огромный накопленный опыт и сотни довольных клиентов, которым мы в свою очередь выражаем огромную благодарность и гарантируем стабильную работу нашего программного обеспечения, его адаптацию под нужды заказчиков, создание новых технологий и индивидуальные решения при подборе программных продуктов и дальнейшем их сопровождении.
+            </h4>
+        <div class="about-flex">
+            <div class="about-item">
+                <img src="{{ url_for('static', filename='images/owl/item1.jpg') }}" alt="Картинка 1">
+                <div class="text">
+                    <h3>Наша компания работает на рынке справочно-правовых систем уже более 19 лет. </h3>
+                    <p>С тех пор нами пройден большой и тернистый путь. Но наши принципы остались неизменными.
+                        Мы стараемся быть надежным партнером для наших клиентов и предоставлять качественный сервис.
+                        Именно поэтому, все эти девятнадцать лет наша компания открыто и честно ведет бизнес на Камчатке, не меняя ни названий, ни открывая других юридических лиц. Стабильность в партнерстве мы считаем основой для долговечного, честного и взаимовыгодного сотрудничества.
+                        Мы стремимся сделать свою работу так, чтобы наши клиенты чувствовали заботу и комфорт даже в такой «бушующей» сфере, как постоянно меняющееся законодательство. </p>
+                </div>
+            </div>
+            <div class="about-item">
+                <img src="{{ url_for('static', filename='images/owl/item2.jpg') }}" alt="Картинка 2">
+                <div class="text">
+                    <h3>Ваш надежный партнер — АМН Гарант-Сервис</h3>
+                    <p>Для этого, нашей компанией создана, пожалуй, лучшая в регионе горячая линия, куда может обратиться любой наш клиент и получить исчерпывающий ответ на свой вопрос. 
+                        Добавьте к этому все возможности справочно-правовой системы Гарант, и вы получите надежного и проверенного партнера в лице «АМН Гарант-Сервис».  
+                        Всегда рады видеть Вас в лице наших клиентов.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7 Блок -->
+    <section id="block7" class="form-block">
+        <h2>Получите бесплатный доступ</h2>
+        <form action="{{ url_for('router.submit') }}" method="POST">
+            <input type="text" name="name" placeholder="Имя" required>
+            <input type="text" name="surname" placeholder="Фамилия" required>
+            <input type="tel" name="phone" placeholder="Контактный телефон" required>
+            <input type="email" name="email" placeholder="Почта" required>
+            <button type="submit">Получить доступ</button>
+        </form>
+    </section>
+
+    <!-- Кнопка чата -->
+    <button id="chat-button" class="chat-button">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Чат
+    </button>
+    <!-- Окно чата -->
+    <div id="chat-window" class="chat-window">
+        <div class="chat-header">
+            <h3>Онлайн-чат</h3>
+            <button id="close-chat" class="close-chat">&times;</button>
+        </div>
+
+        <div class="chat-messages">
+            {% for article in articles %}
+            <div class="">
+                <h2>{{ article.title }}</h2>
+                <p>{{ article.description }}</p>
+                <small></small>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="chat-input">
+            <input type="text" style="width: 10px;" placeholder="Введите сообщение...">
+            <button style="">Отправить</button>
+        </div>
+  </div>
+
+    <!-- Подвал -->
+    <footer>
+        <div class="footer-content">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo-142x52.png') }}" alt="">
+            </div>
+            <div class="address">
+                <h4>Адрес: </h4>
+                <p>г.Петропавловск-Камчатский, ул. Проспект 50 лет Октября, дом 31 </p>
+                <h4>Контакты :</h4>
+                <a href="mailto: teg@gskam.ru">Email:teg@gskam.ru</a>
+                <a href="tel:+71234567890">Телефон: +7(4152)-26-76-15</a>
+                <a href="tel:+74152267074">Телефон/Факс: +7(4152)-26-70-74</a>
+                <a href="https://www.garant.ru" style="margin-block-start: 1em;">Офф. Сайт Гарант</a>
+            </div>
+            <div class="map">
+                <div style="position:relative;overflow:hidden;">
+                    <a href="https://yandex.ru/maps/org/garant/165667963837/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Гарант</a>
+                    <a href="https://yandex.ru/maps/78/petropavlovsk/category/software_companies/184105776/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:14px;">Программное обеспечение в Петропавловске‑Камчатском</a><a href="https://yandex.ru/maps/78/petropavlovsk/category/legal_services/184105630/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:28px;">Юридические услуги в Петропавловске‑Камчатском</a>
+                    <iframe src="https://yandex.ru/map-widget/v1/?ll=158.633394%2C53.056931&mode=search&oid=165667963837&ol=biz&z=19.91" width="280" height="200" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe>
+                </div>            
+            </div>
+        </div>
+    </footer>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const socket = io('/ws', {
+                withCredentials: true,
+                path: '/ws/socket.io',
+                transports: ['websocket'],
+            });
+    
+            // Когда подключились
+            socket.on('connect', () => {
+                console.log('Подключен к WebSocket');
+                socket.emit('load_messages'); // Загружаем старые сообщения при подключении
+            });
+    
+            // Когда приходит сообщение
+            socket.on('message', (msg) => {
+                const chatMessages = document.querySelector('.chat-messages');
+                const newMsg = document.createElement('div');
+                newMsg.classList.add('message');
+                newMsg.innerHTML = `
+                    <h2>${msg.userid}</h2>
+                    <p>${msg.text}</p>
+                    <small>${msg.created_at}</small>
+                `;
+                chatMessages.appendChild(newMsg);
+            });
+    
+            // Отправка сообщения
+            const input = document.querySelector('#message-input');  // Правильный селектор
+            const button = document.querySelector('#send-message');  // Правильный селектор
+    
+            if (button) {
+                button.addEventListener('click', () => {
+                    const message = input.value.trim();
+                    if (message) {
+                        socket.emit('message', { text: message });  // Отправляем сообщение на сервер
+                        input.value = '';  // Очищаем поле ввода
+                    }
+                });
+            }
+    
+            // При закрытии чата — отключаемся (опционально)
+            const closeButton = document.getElementById('close-chat');
+            if (closeButton) {
+                closeButton.addEventListener('click', () => {
+                    socket.disconnect();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

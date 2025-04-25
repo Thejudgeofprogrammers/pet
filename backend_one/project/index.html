@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АМН Гарант-Сервис</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Общие стили */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        section{
+            padding: 20px 20% 20px 20%;
+        }
+        /* Шапка */
+        header {
+            position: fixed;
+            top: -100px;
+            left: 0;
+            width: 80%;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 10% 10px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: top 0.3s ease;
+            z-index: 1000;
+        }
+
+        header.visible {
+            top: 0;
+        }
+
+        header .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        header .support {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        header .support .redir {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            
+        }
+        header .support .redir:hover {
+            color:rgba(0, 123, 255, 0.7)         
+        }
+        header .support .button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 15px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        header .support .button:hover {
+            box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.3);
+        }
+
+        .kon{
+            display: flex;
+            flex-direction: column;
+        }
+        /* 1 Блок */
+        .hero {
+            background-color: #007bff;
+            color: #fff;
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .hero .button {
+            background-color: #fff;
+            color: #007bff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 18px;
+            margin-top: 20px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        .hero .button:hover {
+            box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 2 Блок */
+        .description {
+
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+
+        .description h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .description p {
+            font-size: 18px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* 3 Блок */
+        .video-block {
+
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            /*padding-left: 10%;
+            padding-right: 10%;*/
+
+        }
+
+        .video-block .video-container {
+            flex: 1;
+        }
+
+        .video-block .text {
+            flex: 1;
+        }
+
+        .video-block iframe {
+            width: 100%;
+            height: 300px;
+            border: none;
+        }
+
+        /* 4 Блок */
+        .articles {
+
+            background-color: #f4f4f4;
+        }
+
+        .articles h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .article-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .article {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 5 Блок */
+        .solutions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .sub_ttle{
+            display: flex;
+            width: 100%;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .sub_ttle .all_video{
+            color: #000000;
+            text-decoration: none;
+            font-size: 20px;
+            transition: color 0.3s ease;
+        }
+        .sub_ttle .all_video:hover{
+            color: rgba(0, 123, 255, 0.7)
+        }
+        .video-container {
+            flex: 1;
+        }
+        .content{
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .text {
+            flex: 1;
+
+        }
+
+        iframe {
+            width: 100%;
+            height: 300px;
+            border: none;
+        }
+
+        .link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        /* 6 Блок */
+        .about {
+            padding: 20px 20% 20px 20%;
+            background-color: #f4f4f4;
+        }
+
+        .about h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .about-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .about-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .about-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .about-item img {
+            width: 50%;
+            border-radius: 10px;
+        }
+
+        .about-item .text {
+            width: 50%;
+        }
+
+        /* 7 Блок */
+        .form-block {
+            padding: 20px 20% 20px 20%;
+            text-align: center;
+        }
+
+        .form-block h2 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ccc; /* Стандартный цвет границы */
+            border-radius: 5px;
+            outline: none; /* Убираем стандартный outline */
+            transition: border-color 0.3s ease, background-color 0.3s ease; 
+        }
+        input:focus{
+            border-color: #007bff; /* Цвет границы при фокусе */
+            background-color: #f0f8ff; /* Цвет фона при фокусе */
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.3);
+        }
+        /**/
+        .chatbot-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        /* Подвал */
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+        }
+        footer a{
+            color: #79a0e9;
+            text-decoration: none;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .address{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 440px;
+        }
+        .address p, .address h4{
+            margin-block-end: 0;
+            margin-block-start: 0;
+            text-align: start;
+        }
+        .address h4{
+            margin-block-start: 1em;
+        }
+        .map iframe {
+            width: 100%;
+            height: 150px;
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            .article-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-item {
+                flex-direction: column;
+            }
+
+            .about-item img {
+                width: 100%;
+            }
+
+            .about-item .text {
+                width: 100%;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .article-list {
+                grid-template-columns: 1fr;
+            }
+
+            .video-block, .solutions {
+                flex-direction: column;
+            }
+
+            .video-block iframe, .solutions iframe {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка -->
+    <header id="header" class="hidden">
+        <div class="logo">
+            <img src="item/logo-142x52.png" alt="Гарант-Лого">
+        </div>
+        <div class="support">
+            <a href="#block4" class="redir">Статьи</a>
+            <a href="#block5" class="redir">Обучение</a>
+            <a href="#block6" class="redir">О нас</a>
+            <div class="kon">
+                <a href="mailto: teg@gskam.ru" class="redir">teg@gskam.ru</a>
+            <a href="tel:+74152267615" class="redir">+7 (4152)-26-76-15</a>
+            </div>
+            <a href="#block7" class="button">Попробовать</a>
+        </div>
+    </header>
+
+    <!-- 1 Блок -->
+    <section id="block1" class="hero">
+        <h1>Получите бесплатный доступ к базе "Гарант"</h1>
+        <p>Заполните форму и начните пользоваться уже сегодня!</p>
+        <a href="#block7" class="button">Попробовать</a>
+    </section>
+
+    <!-- 2 Блок -->
+    <section id="block2" class="description">
+        <h2>Что такое "Гарант"?</h2>
+        <p>"Гарант" — это мощная база данных, которая помогает вам находить решения для ваших задач. Она предоставляет доступ к законодательным актам, судебной практике и другим важным документам.</p>
+    </section>
+
+    <!-- 3 Блок -->
+    <section id="block3" class="video-block">
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/ваше_видео" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="text">
+            <h2>Зачем вам "Гарант"?</h2>
+            <p>Информационная система "Гарант" была создана для решения ряда важных задач, связанных с доступом к правовой информации, упрощением работы с законодательством и повышением эффективности юридической деятельности. </p>
+        </div>
+    </section>
+
+    <!-- 4 Блок -->
+    <section id="block4" class="articles">
+        <h2>Полезные статьи</h2>
+        <div class="article-list">
+            <div class="article">
+                <h3>Оперативность</h3>
+                <p>Возможность мгновенно отслеживать новости законодательства</p>
+            </div>
+            <div class="article">
+                <h3>Живая горячая линия</h3>
+                <p>Нужна помощь? Наши специалисты всегда на связи!</p>
+            </div>
+            <div class="article">
+                <h3>Статья 3</h3>
+                <p>Краткое описание статьи 3.</p>
+            </div>
+            <div class="article">
+                <h3>2 в 1</h3>
+                <p>Возможность работы в Гаранте как на компьютере, так и через интернет.</p>
+            </div>
+            <div class="article">
+                <h3>Взвешенность решений </h3>
+                <p> Взвешенность решений и оптимальное решение стоящей перед Вами проблемы</p>
+            </div>
+            <div class="article">
+                <h3>Передовые идеи</h3>
+                <p>Самые современные технологии для юристов, бухгалтеров, кадровиков и всех, кто сталкивается в своей работе с законодательством</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5 Блок -->
+    <section id="block5" class="solutions">
+        <div class="sub_ttle">
+            <h2>Обучающие видео</h2>
+            <a href="http://gskam.ru/obychenie.html" class="all_video">показать все видео</a>
+        </div>
+        <div class="content">
+            <div class="video-container">
+                <iframe width="560" height="315" src="https://youtube.com/watch?v=5DpVNUdHhZY&t=" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="text">
+                <h2>Анализ списков документов</h2>
+                <p>Как эффективно работать со списками в системе ГАРАНТ! Для чего нужен «Синхронный просмотр», какие критерии сортировки, фильтрации и анализа списков представлены в системе, как сохранять списки документов для последующей работы</p>
+            </div>
+        </div>
+        <div class="content" style="    flex-direction: row-reverse;">
+            <div class="video-container">
+                <iframe width="560" height="315" src="https://youtube.com/watch?v=5DpVNUdHhZY&t=" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="text" style="text-align: end;">
+                <h2>Работа с энциклопедиями решений</h2>
+                <p>Энциклопедии решений – уникальные авторские аналитические материалы, доступные только пользователям системы ГАРАНТ и позволяющие быстро находить готовые ответы на актуальные правовые вопросы.</p>
+            </div>
+        </div>
+        <div class="link">
+            <a href="https://edu.garant.ru" style="    color: #00a885; text-align: center; font-size: 46px;" target="_blank">
+                ГАРАНТ - студенту, аспиранту, преподавателю
+            </a>
+        </div>
+    </section>
+
+    <!-- 6 Блок -->
+    <section id="block6" class="about">
+        <h2>О нас</h2>
+        <h4>Все начиналось в далеком 2000 году, когда о справочно-правовых системах еще мало кто знал, сотрудники предприятий и учреждений еще пользовались газетами и журналами, а скорость получения правовой информации оставляла желать лучшего.<br>
+            В 2023 году нашей IT-компании исполняется 20 лет, это огромный накопленный опыт и сотни довольных клиентов, которым мы в свою очередь выражаем огромную благодарность и гарантируем стабильную работу нашего программного обеспечения, его адаптацию под нужды заказчиков, создание новых технологий и индивидуальные решения при подборе программных продуктов и дальнейшем их сопровождении.
+            </h4>
+        <div class="about-grid">
+            <div class="about-item">
+                <img src="item/owl/item1.jpg" alt="Картинка 1">
+                <div class="text">
+                    <h3>Наша компания работает на рынке справочно-правовых систем уже более 19 лет. </h3>
+                    <p>С тех пор нами пройден большой и тернистый путь. Но наши принципы остались неизменными.
+                        Мы стараемся быть надежным партнером для наших клиентов и предоставлять качественный сервис.
+                        Именно поэтому, все эти девятнадцать лет наша компания открыто и честно ведет бизнес на Камчатке, не меняя ни названий, ни открывая других юридических лиц. Стабильность в партнерстве мы считаем основой для долговечного, честного и взаимовыгодного сотрудничества.
+                        Мы стремимся сделать свою работу так, чтобы наши клиенты чувствовали заботу и комфорт даже в такой «бушующей» сфере, как постоянно меняющееся законодательство. </p>
+                </div>
+            </div>
+            <div class="about-item">
+                <img src="item/owl/item2.jpg" alt="Картинка 2">
+                <div class="text">
+                    <h3>Ваш надежный партнер — АМН Гарант-Сервис</h3>
+                    <p>Для этого, нашей компанией создана, пожалуй, лучшая в регионе горячая линия, куда может обратиться любой наш клиент и получить исчерпывающий ответ на свой вопрос. 
+                        Добавьте к этому все возможности справочно-правовой системы Гарант, и вы получите надежного и проверенного партнера в лице «АМН Гарант-Сервис».  
+                        Всегда рады видеть Вас в лице наших клиентов.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7 Блок -->
+    <section id="block7" class="form-block">
+        <h2>Получите бесплатный доступ</h2>
+        <form>
+            <input type="text" placeholder="Имя" required>
+            <input type="text" placeholder="Фамилия" required>
+            <input type="tel" placeholder="Контактный телефон" required>
+            <input type="email" placeholder="Почта" required>
+            <button type="submit">Получить доступ</button>
+        </form>
+    </section>
+
+    <!-- Подвал -->
+    <footer>
+        <div class="footer-content">
+            <div class="logo">
+                <img src="item/logo-142x52.png" alt="">
+            </div>
+            <div class="address">
+                <h4>Адрес: </h4>
+                <p>г.Петропавловск-Камчатский, ул. Проспект 50 лет Октября, дом 31 </p>
+                <h4>Контакты :</h4>
+                <a href="mailto: teg@gskam.ru">Email:teg@gskam.ru</a>
+                <a href="tel:+71234567890">Телефон: +7(4152)-26-76-15</a>
+                <a href="tel:+74152267074">Телефон/Факс: +7(4152)-26-70-74</a>
+                <a href="https://www.garant.ru" style="margin-block-start: 1em;">Офф. Сайт Гарант</a>
+            </div>
+            <div class="map">
+                <div style="position:relative;overflow:hidden;">
+                    <a href="https://yandex.ru/maps/org/garant/165667963837/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Гарант</a><a href="https://yandex.ru/maps/78/petropavlovsk/category/software_companies/184105776/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:14px;">Программное обеспечение в Петропавловске‑Камчатском</a><a href="https://yandex.ru/maps/78/petropavlovsk/category/legal_services/184105630/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:28px;">Юридические услуги в Петропавловске‑Камчатском</a><iframe src="https://yandex.ru/map-widget/v1/?ll=158.633394%2C53.056931&mode=search&oid=165667963837&ol=biz&z=19.91" width="280" height="200" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe>
+                </div>            
+            </div>
+        </div>
+    </footer>
+    <script src="js/header_scroll.js"></script>
+</body>
+</html>

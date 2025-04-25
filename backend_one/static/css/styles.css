@@ -1,0 +1,510 @@
+html {
+    scroll-behavior: smooth;
+}
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+section{
+    padding: 20px 20% 20px 20%;
+}
+/* Шапка */
+
+header {
+    position: fixed;
+    top: -100px;
+    left: 0;
+    width: 80%;
+    background-color: #333;
+    color: #fff;
+    padding: 10px 10% 10px 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: top 0.3s ease;
+    z-index: 5;
+}
+
+header.visible {
+    top: 0;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+header .support {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+header .support .redir {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    
+}
+header .support .redir:hover {
+    color:rgba(0, 123, 255, 0.7)         
+}
+header .support .button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 15px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+header .support .button:hover {
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.3);
+}
+
+.kon{
+    display: flex;
+    flex-direction: column;
+}
+/* 1 Блок */
+.hero {
+    background-color: #007bff;
+    color: #fff;
+    padding: 100px 20px;
+    text-align: center;
+}
+
+.hero .button {
+    background-color: #fff;
+    color: #007bff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 18px;
+    margin-top: 20px;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+.hero .button:hover {
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.3);
+}
+
+/* 2 Блок */
+.description {
+
+    text-align: center;
+    background-color: #f4f4f4;
+}
+
+.description h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.description p {
+    font-size: 18px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* 3 Блок */
+.video-block {
+
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    /*padding-left: 10%;
+    padding-right: 10%;*/
+
+}
+
+.video-block .text {
+    flex: 1;
+}
+
+.video-block iframe {
+    width: 100%;
+    height: 300px;
+    border: none;
+}
+
+/* 4 Блок */
+.articles {
+
+    background-color: #f4f4f4;
+}
+
+.articles h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.article-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.article {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 5 Блок */
+.solutions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+.sub_ttle{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.all_link{
+    color: #000000;
+    text-decoration: none;
+    font-size: 20px;
+    transition: color 0.3s ease;
+}
+.all_link:hover{
+    color: rgba(0, 123, 255, 0.7)
+}
+
+.content{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-direction: row-reverse;
+    gap: 20px;
+}
+.content .text {
+    flex: 1;
+    text-align: end;
+}
+
+.content:nth-child(even) {
+    flex-direction: row;
+}
+
+.content:nth-child(even) .text{
+    flex: 1;
+    text-align: start;
+}
+
+iframe {
+    width: 100%;
+    height: 300px;
+    border: none;
+}
+
+.link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.link a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+/* 6 Блок */
+.about {
+    padding: 20px 20% 20px 20%;
+    background-color: #f4f4f4;
+}
+
+.about h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.about-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+}
+
+.about-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.about-item:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.about-item img {
+    width: 50%;
+    border-radius: 10px;
+}
+
+.about-item .text {
+    width: 50%;
+}
+
+/* 7 Блок */
+.form-block {
+    padding: 20px 20% 20px 20%;
+    text-align: center;
+}
+
+.form-block h2 {
+    margin-bottom: 20px;
+}
+
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input, button {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease, background-color 0.3s ease; 
+}
+input:focus{
+    border-color: #007bff;
+    background-color: #f0f8ff;
+}
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+button:hover {
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.3);
+}
+/*.chatbot-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}*/
+
+/* Подвал */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+}
+footer a{
+    color: #79a0e9;
+    text-decoration: none;
+}
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.address{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 440px;
+}
+.address p, .address h4{
+    margin-block-end: 0;
+    margin-block-start: 0;
+    text-align: start;
+}
+.address h4{
+    margin-block-start: 1em;
+}
+.map iframe {
+    width: 100%;
+    height: 150px;
+    border: none;
+}
+.header_reduced{
+ display: none;
+}
+@media (max-width: 768px) {
+    section{
+        padding: 20px 20px 20px 20px;
+    }
+    .header_reduced{
+        display: block;
+        position: relative;
+        width: 30px;
+        height: 20px;
+        z-index: 35;
+    }
+    header {
+        top: 0px;
+    }
+    header .redir,header .kon{
+        display: none;
+    }
+    .article-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .content, .content:nth-child(even){
+        flex-direction: column;
+    }
+    .content .text, .content:nth-child(even) .text{
+        flex: 1;
+        text-align:center;
+    }
+    .about-item {
+        flex-direction: column;
+        
+    }
+    .about-item:nth-child(even) {
+        flex-direction:column;
+    }
+    .about-item img {
+        width: 100%;
+    }
+
+    .about-item .text {
+        width: 100%;
+    }
+
+    .footer-content {
+        flex-direction: row;
+        gap: 20px;
+    }
+    .footer-content .map {
+        display: none;
+    }
+    .footer-content .address{
+        width: 300px;
+    }
+    .footer-content .address, .footer-content .address h4, .footer-content .address p{
+        text-align: end;
+    }
+}
+
+@media (max-width: 480px) {
+    .article-list {
+        grid-template-columns: 1fr;
+    }
+
+    .video-block, .solutions {
+        flex-direction: column;
+    }
+
+    .video-block iframe, .solutions iframe {
+        height: 200px;
+    }
+}
+.list_requests{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 1em;
+}
+.request p{
+    margin-block-start: 0;
+}
+.request{
+    display:flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    border: 2px solid;
+    padding: 1em;
+}
+
+.video-section {
+    text-align: center;
+    padding: 20px 20%;
+}
+
+.video-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.video-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.video-preview {
+    flex: 1;
+    max-width: 40%;
+}
+
+.video-preview iframe {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+}
+
+.video-info {
+    flex: 2;
+    text-align: left;
+}
+
+
+.back-link {
+    display: block;
+    margin-top: 20px;
+    font-size: 18px;
+    text-decoration: none;
+    color: #333;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .video-section {
+        padding: 20px;
+    }
+
+    .video-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .video-preview {
+        max-width: 100%;
+    }
+
+    .video-info {
+        text-align: center;
+    }
+}
