@@ -13,6 +13,9 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
+RUN apt update && \
+    apt install sqlite3
+
 COPY requirements.txt .
 
 RUN python3 -m venv .venv && \
