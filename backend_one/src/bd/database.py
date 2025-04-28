@@ -28,6 +28,12 @@ class Request_user(db.Model):
     phone         = db.Column(db.String(20), nullable=False)
     email         = db.Column(db.String(100), nullable=False)
 
+class Operator(db.Model):
+    id: int         = db.Column(db.Integer, primary_key=True)
+    login: str      = db.Column(db.String(50), nullable=False)
+    password: str   = db.Column(db.String(50), nullable=False)
+
+
     def __str__(self):
         return (
             f"ID: {self.id}\n"

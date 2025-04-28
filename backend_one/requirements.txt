@@ -3,3 +3,5 @@ flask
 pydantic
 flask_sqlalchemy
 sqlalchemy
+flask_login
+redis

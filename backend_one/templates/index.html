@@ -109,6 +109,55 @@
 .chat-input button:hover {
   background-color: #007bff;
 }
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+}
+
+.message {
+    max-width: 70%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    position: relative;
+}
+
+/* Стиль сообщения пользователя (справа) */
+.user-message {
+    align-self: flex-end;
+    background-color: #007bff;
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+/* Стиль сообщения оператора (слева) */
+.operator-message {
+    align-self: flex-start;
+    background-color: #f1f1f1;
+    color: #333;
+    border-bottom-left-radius: 4px;
+}
+
+.message-sender {
+    font-size: 14px;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+.message-text {
+    margin: 0;
+    word-wrap: break-word;
+}
+
+.message-time {
+    display: block;
+    text-align: right;
+    font-size: 11px;
+    opacity: 0.7;
+    margin-top: 4px;
+}
     </style>
 </head>
 <body>
@@ -275,17 +324,18 @@
         </div>
 
         <div class="chat-messages">
-            {% for article in articles %}
-            <div class="">
-                <h2>{{ article.title }}</h2>
-                <p>{{ article.description }}</p>
-                <small></small>
+            {% for message in messages %}
+            <div class="message {% if message.userid == current_user_id %}user-message{% else %}operator-message{% endif %}">
+                <h2 class="message-sender">{% if message.userid == current_user_id %}You{% else %}Operator{% endif %}</h2>
+                <small class="message-time">{{ message.created_at.strftime('%H:%M') }}</small>
             </div>
             {% endfor %}
         </div>
+        
         <div class="chat-input">
-            <input type="text" style="width: 10px;" placeholder="Введите сообщение...">
-            <button style="">Отправить</button>
+            <input type="text" id="message-input" placeholder="Введите сообщение...">
+            <button id="send-message">Отправить</button>
+            <button id="close-chat" style="background-color: #dc3545;">Закрыть чат</button>
         </div>
   </div>
 
@@ -315,53 +365,106 @@
     </footer>
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const socket = io('/ws', {
+document.addEventListener('DOMContentLoaded', () => {
+            const socket = io('http://localhost:5005', {
                 withCredentials: true,
                 path: '/ws/socket.io',
                 transports: ['websocket'],
             });
-    
-            // Когда подключились
+
+            // Получаем ID текущего пользователя из шаблона
+            const currentUserId = "{{ current_user_id }}";
+
+            // Подключение к WebSocket
             socket.on('connect', () => {
                 console.log('Подключен к WebSocket');
-                socket.emit('load_messages'); // Загружаем старые сообщения при подключении
+                socket.emit('load_messages');
             });
-    
-            // Когда приходит сообщение
+
+            // Получение chat_token
+            socket.on('new_chat_token', (data) => {
+                const chatToken = data.chat_token;
+                console.log('Получен новый chat_token:', chatToken);
+                document.cookie = `chat_token=${chatToken}; max-age=72000; path=/; SameSite=Lax`;
+            });
+
+            socket.on('load_messages', (messages) => {
+                const chatMessages = document.querySelector('.chat-messages');
+                chatMessages.innerHTML = '';  // Очистить старые сообщения
+            
+                messages.forEach(msg => {
+                    const newMsg = document.createElement('div');
+                    const isCurrentUser = msg.userid === currentUserId;
+                    const messageClass = isCurrentUser ? 'user-message' : 'operator-message';
+                    const senderName = isCurrentUser ? 'You' : 'Operator';
+                    
+                    const messageTime = msg.created_at ? 
+                        new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 
+                        new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    
+                    newMsg.classList.add('message', messageClass);
+                    newMsg.innerHTML = `
+                        <h2 class="message-sender">${senderName}</h2>
+                        <p class="message-text">${msg.text}</p>
+                        <small class="message-time">${messageTime}</small>
+                    `;
+                    
+                    chatMessages.appendChild(newMsg);
+                });
+            
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            });
+
+            // Обработка входящих сообщений
             socket.on('message', (msg) => {
                 const chatMessages = document.querySelector('.chat-messages');
                 const newMsg = document.createElement('div');
-                newMsg.classList.add('message');
+                
+                // Определяем класс и отправителя
+                const isCurrentUser = msg.userid === currentUserId;
+                const messageClass = isCurrentUser ? 'user-message' : 'operator-message';
+                const senderName = isCurrentUser ? 'You' : 'Operator';
+                
+                // Форматируем время
+                const messageTime = msg.created_at ? 
+                    new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 
+                    new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                newMsg.classList.add('message', messageClass);
                 newMsg.innerHTML = `
-                    <h2>${msg.userid}</h2>
-                    <p>${msg.text}</p>
-                    <small>${msg.created_at}</small>
+                    <h2 class="message-sender">${senderName}</h2>
+                    <p class="message-text">${msg.text}</p>
+                    <small class="message-time">${messageTime}</small>
                 `;
+                
                 chatMessages.appendChild(newMsg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
             });
-    
+
             // Отправка сообщения
-            const input = document.querySelector('#message-input');  // Правильный селектор
-            const button = document.querySelector('#send-message');  // Правильный селектор
-    
+            const input = document.querySelector('#message-input');
+            const button = document.querySelector('#send-message');
+
             if (button) {
-                button.addEventListener('click', () => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
                     const message = input.value.trim();
                     if (message) {
-                        socket.emit('message', { text: message });  // Отправляем сообщение на сервер
-                        input.value = '';  // Очищаем поле ввода
+                        socket.emit('message', { text: message });
+                        input.value = '';
+                    }
+                });
+
+                // Отправка по Enter
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        button.click();
                     }
                 });
             }
-    
-            // При закрытии чата — отключаемся (опционально)
-            const closeButton = document.getElementById('close-chat');
-            if (closeButton) {
-                closeButton.addEventListener('click', () => {
-                    socket.disconnect();
-                });
-            }
+
+            // Закрытие чата
         });
     </script>
 </body>

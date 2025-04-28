@@ -2,6 +2,7 @@ flask
 flask-socketio
 python-dotenv
 pydantic
-motor
+pymongo
 redis
-eventlet
+eventlet 
+gevent

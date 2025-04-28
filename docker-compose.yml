@@ -52,22 +52,22 @@ services:
     networks:
       - custom_network
   
-  nginx:
-    container_name: nginx
-    image: nginx
-    volumes:
-      - ./nginx/templates:/etc/nginx/templates
-      - ./nginx/config/nginx.conf:/etc/nginx/nginx.conf
-    ports:
-      - "80:80"
-    environment:
-      - NGINX_HOST=foobar.com
-      - NGINX_PORT=80
-    depends_on:
-      - backend_one
-      - backend_bot
-    networks:
-      - custom_network
+  # nginx:
+  #   container_name: nginx
+  #   image: nginx
+  #   volumes:
+  #     - ./nginx/templates:/etc/nginx/templates
+  #     - ./nginx/config/nginx.conf:/etc/nginx/nginx.conf
+  #   ports:
+  #     - "80:80"
+  #   environment:
+  #     - NGINX_HOST=foobar.com
+  #     - NGINX_PORT=80
+  #   depends_on:
+  #     - backend_one
+  #     - backend_bot
+  #   networks:
+  #     - custom_network
 
 networks:
   custom_network:

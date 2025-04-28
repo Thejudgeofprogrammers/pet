@@ -24,3 +24,8 @@ class RequestUserDTO(BaseModel):
     phone: str
     email: str
     date: date
+    
+class Operator(BaseModel):
+    id: int
+    login: str
+    password: str
