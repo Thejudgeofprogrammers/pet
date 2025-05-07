@@ -143,7 +143,9 @@
     </style>
 </head>
 <body>
-    <button class="logout-btn" id="logout-btn">Выйти из системы</button>
+    <form method="POST" action="/logout">
+        <button type="submit" class="logout-btn" id="logout-btn">Выйти из системы</button>
+    </form>
     <main>
         <div class="container">
             <h1>Панель оператора АМН Гарант-Сервис</h1>
@@ -230,31 +232,5 @@
             {% endif %}
         </div>
     </main>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('logout-btn').addEventListener('click', function() {
-                if(confirm('Вы уверены, что хотите выйти из системы?')) {
-                    // Отправляем запрос на выход
-                    fetch('/operator/logout', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }
-                    })
-                    .then(response => {
-                        if(response.ok) {
-                            window.location.href = '/login'; // Перенаправляем на страницу входа
-                        } else {
-                            alert('Ошибка при выходе из системы');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Произошла ошибка при выходе из системы');
-                    });
-                }
-            });
-        });
-    </script>
 </body>
 </html>

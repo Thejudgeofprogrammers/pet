@@ -1,13 +1,12 @@
-from flask import Blueprint, redirect, render_template, request, url_for, flash, make_response
+from flask import Blueprint, redirect, render_template, request, url_for, flash, make_response, jsonify
 from datetime import datetime
 from src.app_module.app_service import Services as service
 from uuid import uuid4
-# from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from src.bd.database import Operator, db
 import redis
 import os
 from dotenv import load_dotenv
-
+import requests as rq
 load_dotenv('../../.env')
 
 router = Blueprint('router', __name__, template_folder='../../templates')
@@ -27,6 +26,14 @@ def log_request():
         return resp
     return None
 
+@router.before_request
+def rights():
+    if request.path == "/opdashboard":
+        manager_token = request.cookies.get('manager_token')
+        if manager_token and client.get(manager_token) == b'1':
+            return None
+        return redirect('/oplog')
+    return None
 
 @router.route('/')
 def index():
@@ -116,26 +123,37 @@ def view_notes():
         flash(f"Ошибка загрузки запросов: {e}", "danger")
         return redirect('/')
 
-
 @router.route('/oplog', methods=['GET', 'POST'])
 def oplog():
     if request.method == 'POST':
-        login = request.form.get('login')
+        login = request.form.get('username')
         password = request.form.get('password')
-
-        # достаём из бд login password и сравниваем
-        # достаём id из бд по логину
-        # закидываем в редис operator_id
-        # закидываем в cookie operator_id httpOnly
-        # Сравниваем на странице op_dashboard
-        
-        
+        req = rq.post('http://auth_service:5006/oplog', json={"login": login, "password": password})
+        data = req.json()
+        if data.get("allow"):
+            resp = make_response(redirect('/opdashboard'))
+            uid = str(uuid4())
+            resp.set_cookie(key='manager_token', value=uid, httponly=False) # TTL # HTTPONLY # Secure
+            client.set(name=uid, ex=int(os.getenv("TTL_COOKIE", 14400)), value="1") # TTL
+            return resp
+        return jsonify({"message": "Ошибка not allow"}), 403
     return render_template('oplog.html')
 
-# @router.route('/opdashboard')
-# @login_required
-# def op_dashboard():
-#    return render_template('opdashboard.html')
+@router.route('/logout', methods=['POST'])
+def logout():
+    manager_token = request.cookies.get('manager_token')
+    
+    if manager_token:
+        client.delete(manager_token)
+
+    resp = make_response(redirect('/oplog'))
+    resp.delete_cookie("manager_token")
+    
+    return resp
+
+@router.route('/opdashboard')
+def op_dashboard():
+   return render_template('opdashboard.html')
 
 # @router.route('/oplogout')
 # @login_required
