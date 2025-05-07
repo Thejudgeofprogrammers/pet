@@ -1,0 +1,8 @@
+flask 
+flask-socketio
+python-dotenv
+pydantic
+pymongo
+redis
+eventlet 
+gevent

@@ -13,9 +13,6 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-RUN apt update && \
-    apt install sqlite3
-
 COPY requirements.txt .
 
 RUN python3 -m venv .venv && \
@@ -26,6 +23,6 @@ COPY . .
 
 ENV PATH="/app/.venv/bin:$PATH"
 
-EXPOSE 5004
+EXPOSE 5006
 
-CMD ["python3","-u","bootstrap.py"]
+CMD ["python3", "-u", "bootstrap.py"]
