@@ -7,6 +7,7 @@ from typing import List, Optional
 class ChatModel(BaseModel):
     chatid: str = Field(default_factory=lambda: str(uuid4()))
     userid: str
+    status: int = Field(default=2)
     # Find manager
     messages: Optional[List[Message]] = Field(default_factory=list)
     class Config:
