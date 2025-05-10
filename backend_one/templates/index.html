@@ -372,13 +372,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 transports: ['websocket'],
             });
 
+            function getCookie(name) {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+            }
+
             // Получаем ID текущего пользователя из шаблона
             const currentUserId = "{{ current_user_id }}";
 
             // Подключение к WebSocket
             socket.on('connect', () => {
                 console.log('Подключен к WebSocket');
-                socket.emit('load_messages');
+                
+                // Получаем chat_token из cookies
+                const chatToken = getCookie('chat_token');
+                console.log(chatToken)
+                if (!chatToken) {
+                    // Если chat_token нет, запрашиваем новый
+                    console.log('new_chat_token')
+                    socket.emit('new_chat_token');
+                } else {
+                    // Если токен есть, запрашиваем сообщения
+                    console.log('load_messages')
+                    socket.emit('load_messages');
+                }
             });
 
             // Получение chat_token
@@ -416,45 +434,48 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             // Обработка входящих сообщений
-            socket.on('message', (msg) => {
+            socket.on('new_message', (msg) => {
+                console.log('1')
                 const chatMessages = document.querySelector('.chat-messages');
                 const newMsg = document.createElement('div');
-                
+                console.log('2')
                 // Определяем класс и отправителя
                 const isCurrentUser = msg.userid === currentUserId;
+                console.log('3')
                 const messageClass = isCurrentUser ? 'user-message' : 'operator-message';
                 const senderName = isCurrentUser ? 'You' : 'Operator';
-                
+                console.log('4')
                 // Форматируем время
                 const messageTime = msg.created_at ? 
                     new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 
                     new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
+                console.log('5')
                 newMsg.classList.add('message', messageClass);
                 newMsg.innerHTML = `
                     <h2 class="message-sender">${senderName}</h2>
                     <p class="message-text">${msg.text}</p>
                     <small class="message-time">${messageTime}</small>
                 `;
-                
+                console.log('6')
                 chatMessages.appendChild(newMsg);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             });
-
+            console.log('7')
             // Отправка сообщения
             const input = document.querySelector('#message-input');
             const button = document.querySelector('#send-message');
-
+            console.log('8')
             if (button) {
+                console.log('9')
                 button.addEventListener('click', (e) => {
                     e.preventDefault();
                     const message = input.value.trim();
                     if (message) {
-                        socket.emit('message', { text: message });
+                        socket.emit('new_message', { text: message });
                         input.value = '';
                     }
                 });
-
+                console.log('10')
                 // Отправка по Enter
                 input.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') {
@@ -462,6 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         button.click();
                     }
                 });
+                console.log('11')
             }
 
             // Закрытие чата

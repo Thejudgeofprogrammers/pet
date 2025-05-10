@@ -25,4 +25,4 @@ ENV PATH="/app/.venv/bin:$PATH"
 
 EXPOSE 5005
 
-CMD ["python3", "bootstrap.py"]
+CMD ["python3","-u","bootstrap.py"]

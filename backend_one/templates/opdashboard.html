@@ -179,12 +179,12 @@
                             <td>{{ chat.id }}</td>
                             <td>{{ chat.issue }}</td>
                             <td class="
-                                {% if chat.status == 'chatbot' %}status-chatbot
-                                {% elif chat.status == 'operator' %}status-operator
+                                {% if chat.status == '1' %}status-chatbot
+                                {% elif chat.status == '2' %}status-operator
                                 {% else %}status-completed
                                 {% endif %}">
-                                {% if chat.status == 'chatbot' %}Чат-бот
-                                {% elif chat.status == 'operator' %}Требуется оператор
+                                {% if chat.status == '1' %}Чат-бот
+                                {% elif chat.status == '2' %}Требуется оператор
                                 {% else %}Завершен
                                 {% endif %}
                             </td>
@@ -233,4 +233,18 @@
         </div>
     </main>
 </body>
+<script>
+    // Запрос всех чатов
+    socket.emit('get_all_chats');
+
+    // Получение списка чатов
+    socket.on('all_chats', (data) => {
+        if (data.error) {
+            console.error('Ошибка при получении чатов:', data.error);
+        } else {
+            console.log('Список чатов:', data.chats);
+            // тут можно отобразить их в интерфейсе
+        }
+    });
+</script>
 </html>
